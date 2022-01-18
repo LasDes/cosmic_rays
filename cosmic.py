@@ -120,9 +120,48 @@ fit_counts=angular_func(fit_angles,popt[0],popt[1],popt[2])
 plt.figure(6)
 #plt.errorbar(angles_east,counts_east,err_counts_east,delta_theta,fmt='o',color='blue',ms=4,label='counts east')
 #plt.errorbar(angles_west,counts_west,err_counts_west,delta_theta,fmt='o',color='blue',ms=4,label='counts west')
-plt.errorbar(total_angles,total_counts,err_total_counts,delta_theta,fmt='o',color='blue',ms=4,label='counts')
+plt.errorbar(total_angles,total_counts,err_total_counts,delta_theta,fmt='o',ms=4,label='counts')
 #plt.plot(fit_angles,fit_counts,'--')
 plt.xlabel('Zenith angle [$^{\circ}$]')
 plt.ylabel('Counts')
-plt.legend()
+#plt.legend()
+plt.savefig('plots/angular_distribution.png',dpi=400,bbox_inches='tight')
+
+
+'''
+East-west asymmetry coefficient and error analysis of it
+'''
+eastonly_angles=angles_east[1:]
+westonly_angles=-1*angles_west[1:]
+
+eastonly_counts=counts_east[1:]
+westonly_counts=counts_west[1:]
+
+err_eastonly_counts=err_counts_east[1:]
+err_westonly_counts=err_counts_west[1:]
+
+#print(err_eastonly_counts,err_westonly_counts)
+#print(eastonly_angles,westonly_angles)
+x=0.0
+y=0.0
+err_x_2=0.0
+err_y_2=0.0
+for i in range(len(eastonly_angles)):
+    x+=(westonly_counts[i]-eastonly_counts[i])
+    y+=(westonly_counts[i]+eastonly_counts[i])
+    err_x_2+=((westonly_counts[i])**2 + (eastonly_counts[i])**2)
+    err_y_2+=((westonly_counts[i])**2 + (eastonly_counts[i])**2)
+
+err_x=np.sqrt(err_x_2)
+err_y=np.sqrt(err_y_2)
+
+epsilon=x/y
+err_epsilon=epsilon*(np.sqrt(((err_x/x)**2)+((err_y/y)**2)))
+
+
+print('The east-west asymmetry coefficient is: ',(chr(949)),' = ',epsilon,(chr(177)),err_epsilon)
+
+
+
+
 plt.show()
