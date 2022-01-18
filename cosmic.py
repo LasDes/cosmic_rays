@@ -109,19 +109,19 @@ Random fit
 '''
 
 def angular_func(x,a,b,c):
-    y=a*x**2+b*x+c
+    y=a*(np.cos(b*x))**2 +c
     return y
-popt, pcov = curve_fit(angular_func,total_angles,total_counts)
+popt, pcov = curve_fit(angular_func,total_angles,total_counts,bounds=([207,0,0],[207.1,0.05,50]))
 
 fit_angles=np.linspace(-90,90,1000)
 fit_counts=angular_func(fit_angles,popt[0],popt[1],popt[2])
-
+print('para',popt)
 
 plt.figure(6)
 #plt.errorbar(angles_east,counts_east,err_counts_east,delta_theta,fmt='o',color='blue',ms=4,label='counts east')
 #plt.errorbar(angles_west,counts_west,err_counts_west,delta_theta,fmt='o',color='blue',ms=4,label='counts west')
 plt.errorbar(total_angles,total_counts,err_total_counts,delta_theta,fmt='o',ms=4,label='counts')
-#plt.plot(fit_angles,fit_counts,'--')
+plt.plot(fit_angles,fit_counts,'--')
 plt.xlabel('Zenith angle [$^{\circ}$]')
 plt.ylabel('Counts')
 #plt.legend()
