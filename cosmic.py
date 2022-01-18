@@ -80,4 +80,49 @@ plt.figure(5)
 plt.plot(time_stop_up1,stop_up2)
 plt.xlabel('time ns')
 
+'''
+Angular distribution and east-west effect
+'''
+
+angles_east=np.array([0,10,30,50,70,90]) #degrees
+angles_west=-1*angles_east    #degrees
+total_angles=np.concatenate([angles_east[1:],angles_west[::-1]])
+
+print(angles_east[1:])
+print(total_angles)
+
+counts_east=np.array([207,215,170,71,51,30])
+err_counts_east=np.sqrt(counts_east)
+
+counts_west=np.array([207,197,195,99,36,16])
+err_counts_west=np.sqrt(counts_west)
+
+total_counts=np.concatenate([counts_east[1:],counts_west[::-1]])
+err_total_counts=np.concatenate([err_counts_east[1:],err_counts_west[::-1]])
+
+delta_theta=6   #degrees error to same signifigance as angle measurements.
+
+time=15*60 #time of each measurement in seconds
+
+'''
+Random fit
+'''
+
+def angular_func(x,a,b,c):
+    y=a*x**2+b*x+c
+    return y
+popt, pcov = curve_fit(angular_func,total_angles,total_counts)
+
+fit_angles=np.linspace(-90,90,1000)
+fit_counts=angular_func(fit_angles,popt[0],popt[1],popt[2])
+
+
+plt.figure(6)
+#plt.errorbar(angles_east,counts_east,err_counts_east,delta_theta,fmt='o',color='blue',ms=4,label='counts east')
+#plt.errorbar(angles_west,counts_west,err_counts_west,delta_theta,fmt='o',color='blue',ms=4,label='counts west')
+plt.errorbar(total_angles,total_counts,err_total_counts,delta_theta,fmt='o',color='blue',ms=4,label='counts')
+#plt.plot(fit_angles,fit_counts,'--')
+plt.xlabel('Zenith angle [$^{\circ}$]')
+plt.ylabel('Counts')
+plt.legend()
 plt.show()
