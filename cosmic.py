@@ -121,10 +121,10 @@ plt.figure(6)
 #plt.errorbar(angles_east,counts_east,err_counts_east,delta_theta,fmt='o',color='blue',ms=4,label='counts east')
 #plt.errorbar(angles_west,counts_west,err_counts_west,delta_theta,fmt='o',color='blue',ms=4,label='counts west')
 plt.errorbar(total_angles,total_counts,err_total_counts,delta_theta,fmt='o',ms=4,label='counts')
-plt.plot(fit_angles,fit_counts,'--')
+plt.plot(fit_angles,fit_counts,'--',label='$I\propto cos^2 \Theta$')
 plt.xlabel('Zenith angle [$^{\circ}$]')
-plt.ylabel('Counts')
-#plt.legend()
+plt.ylabel('$I$ [Counts]')
+plt.legend()
 plt.savefig('plots/angular_distribution.png',dpi=400,bbox_inches='tight')
 
 
