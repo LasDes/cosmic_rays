@@ -59,7 +59,6 @@ print(popt)
 
 plt.figure(3)
 plt.scatter(cal1_peaks,delays,s=5)
-plt.plot('--')
 plt.xlabel('channel')
 plt.ylabel('time')
 #plt.ylim(0,1500)
